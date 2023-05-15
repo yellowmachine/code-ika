@@ -3,8 +3,13 @@ const { v2: compose } = require('docker-compose')
 const path = require('path')
 const DockerEvents = require("docker-events")
 const Dockerode = require('dockerode');
+const { EventEmitter } = require('node:events');
 
 const ROOT = 'workspaces'
+
+const workspaceEmitter = new EventEmitter();
+
+workspaceEmitter.on('event', (msg) => console.log('evento', msg))
 
 function startEmitter(){
     const emitter = new DockerEvents({
@@ -13,6 +18,7 @@ function startEmitter(){
 
     emitter.start();
 
+    /*
     emitter.on("connect", function() {
         console.log("connected to docker api");
     });
@@ -20,9 +26,10 @@ function startEmitter(){
     emitter.on("disconnect", function() {
         console.log("disconnected to docker api; reconnecting");
     });
+    */
 
     emitter.on("_message", function(message) {
-        console.log("got a message from docker: %j", message);
+        workspaceEmitter.emit('event', message)
     });
 
     return emitter.stop
@@ -104,11 +111,11 @@ async function isWorkspace(name){
 }
 
 async function upWorkspace(workspace){
-    await cmd('upAll', workspace)
+    await cmd('upAll', `${ROOT}/${workspace}`)
 }
 
 async function downWorkspace(workspace){
-    await cmd('down', workspace)
+    await cmd('down', `${ROOT}/${workspace}`)
 }
 
 async function createWorkspace(name, specification, readme){
@@ -131,14 +138,18 @@ async function deleteWorkspace(name){
 
 /// END WORKSPACE
 
+// MAIN, testing API
+
 async function main(){
-    //const stop = startEmitter()
+    const stop = startEmitter()
     const x = await getStates()
     console.log(x)
 
     const w = await getWorkspace('ika')
     console.log(w)
-    //stop()
+    await upWorkspace('ika')
+    await downWorkspace('ika')
+    stop()
 }
 
 main()

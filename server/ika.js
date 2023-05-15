@@ -4,6 +4,8 @@ const path = require('path')
 const DockerEvents = require("docker-events")
 const Dockerode = require('dockerode');
 
+const ROOT = 'workspaces'
+
 function startEmitter(){
     const emitter = new DockerEvents({
         docker: new Dockerode({socketPath: '/var/run/docker.sock'}),
@@ -40,23 +42,43 @@ async function cmd(cmd, workspace, options){
     }
 }
 
+async function read(source){
+    return await readFile(source, "utf8")
+}
+
+async function readReadme(name){
+    return await read(`${ROOT}/${name}/README`)
+}
+
+async function readSpecification(name){
+    return await read(`${ROOT}/${name}/docker-compose.yml`)
+}
+
+async function write(dest, txt){
+    await writeFile(dest, txt, "utf8")
+}
+
+async function writeReadme(name, txt){
+    await write(`${ROOT}/${name}/README`, txt)
+}
+
+async function writeSpecification(name, txt){
+    await write(`${ROOT}/${name}/docker-compose.yml`, txt)
+}
+
+/// WORKSPACE
+
 const getWorkspaces = async source =>
   (await readdir(source, { withFileTypes: true }))
     .filter(dirent => dirent.isDirectory())
     .map(dirent => dirent.name)
 
-const getWorkspaceState = async (workspace) => {
-    return (await cmd('ps', workspace)).data
-}
-
-const root = 'workspaces'
-
 async function getStates(){    
-    const dirs = await getWorkspaces(root)
+    const dirs = await getWorkspaces(ROOT)
     
     const states = await Promise.all(
         dirs.map(async (name) => {
-            return await getWorkspaceState(`${root}/${name}`)
+            return await getWorkspaceState(`${ROOT}/${name}`)
         })
     )
     
@@ -65,34 +87,18 @@ async function getStates(){
     return obj
 }
 
+const getWorkspaceState = async (workspace) => {
+    return (await cmd('ps', workspace)).data
+}
+
 async function getWorkspace(name){
-    const readme = readReadme(name)
-    const specification = readSpecification(name)
+    const readme = await readReadme(name)
+    const specification = await readSpecification(name)
     return {readme, specification}
 }
 
-async function readReadme(name){
-    return await readFile(`${root}/${name}/README`, "utf8")
-}
-
-async function readSpecification(name){
-    return await readFile(`${root}/${name}/docker-compose.yml`, "utf8")
-}
-
-async function write(dest, txt){
-    await writeFile(`${dest}`, txt, "utf8")
-}
-
-async function writeReadme(name, txt){
-    await write(`${root}/${name}/README`, txt)
-}
-
-async function writeSpecification(name, txt){
-    await write(`${root}/${name}/docker-compose.yml`, txt)
-}
-
 async function isWorkspace(name){
-    const err = await stat(`${root}/${name}`)
+    const err = await stat(`${ROOT}/${name}`)
     if(!err) return true
     else return false
 }
@@ -108,29 +114,31 @@ async function downWorkspace(workspace){
 async function createWorkspace(name, specification, readme){
     if(isWorkspace(name)) throw "Workspace already exists"
     await writeReadme(name, readme)
-    await writeSpecification(name, readme)
+    await writeSpecification(name, specification)
 }
 
 async function updateWorkspace(name, specification, readme){
     if(!isWorkspace(name)) throw "Workspace doesn't exist"
     await writeReadme(name, readme)
-    await writeSpecification(name, readme)
+    await writeSpecification(name, specification)
 }
 
 async function deleteWorkspace(name){
     if(!isWorkspace(name)) throw "Workspace doesn't exist"
     await downWorkspace(name)
-    await rm(`${root}/${name}`, { recursive: true, force: true });
+    await rm(`${ROOT}/${name}`, { recursive: true, force: true });
 }
 
+/// END WORKSPACE
+
 async function main(){
-    const stop = startEmitter()
+    //const stop = startEmitter()
     const x = await getStates()
     console.log(x)
-    stop()
+
+    const w = await getWorkspace('ika')
+    console.log(w)
+    //stop()
 }
 
 main()
-
-//readReadme('ika')
-//writeReadme('puf', 'hola ;)')

@@ -5,7 +5,7 @@ export const GET = () => {
 
 	const stream = new ReadableStream({
 		start(controller) {
-			workspaceEmitter.on('event', (msg: string) => {
+			workspaceEmitter.on('event:ps', (msg: any) => {
 				controller.enqueue('data: ' + JSON.stringify(msg) + "\n\n");
 			});
 		},

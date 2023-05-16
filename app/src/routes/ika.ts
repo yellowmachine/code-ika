@@ -6,11 +6,11 @@ import DockerEvents from "docker-events";
 import Dockerode from 'dockerode';
 import { EventEmitter } from 'node:events';
 
-const ROOT = 'workspaces'
+const ROOT = "/home/miguel/dev/docker/code01/server/workspaces"
 
 export const workspaceEmitter = new EventEmitter();
 
-workspaceEmitter.on('event', (msg) => console.log('evento', msg))
+//workspaceEmitter.on('event', (msg) => console.log('evento', msg))
 
 function startEmitter(){
     const emitter = new DockerEvents({
@@ -18,10 +18,6 @@ function startEmitter(){
     });
 
     emitter.start();
-
-    //emitter.on("_message", function(message: string) {
-    //    workspaceEmitter.emit('event', message)
-    //});
 
     emitter.on("start", function(message: string) {
         workspaceEmitter.emit('event:ps', getStates())
@@ -88,14 +84,23 @@ export async function getStates(){
         })
     )
     
-    var obj: Record<string, {services: any}> = {};
+    var obj: Record<string, {workspace: string, readme: string, specification: string, services: any}> = {};
     dirs.forEach((key, i) => obj[key] = states[i]);
     return obj
 }
 
 const getWorkspaceState = async (workspace: string) => {
     // @ts-ignore
-    return (await cmd('ps', workspace)).data
+    const services = (await cmd('ps', workspace)).data
+    const readme = await readReadme(workspace)
+    const specification = await readSpecification(workspace)
+    
+    return {
+        workspace,
+        readme,
+        specification,
+        services
+    }
 }
 
 async function getWorkspace(name: string){
@@ -111,11 +116,11 @@ async function isWorkspace(name: string){
 }
 
 export async function upWorkspace(workspace: string){
-    await cmd('upAll', `${ROOT}/${workspace}`)
+    return await cmd('upAll', `${ROOT}/${workspace}`)
 }
 
 export async function downWorkspace(workspace: string){
-    await cmd('down', `${ROOT}/${workspace}`)
+    return await cmd('down', `${ROOT}/${workspace}`)
 }
 
 async function createWorkspace(name: string, specification: string, readme: string){
@@ -123,14 +128,16 @@ async function createWorkspace(name: string, specification: string, readme: stri
     await mkdir(`${ROOT}/${name}`)
     await writeReadme(name, readme)
     await writeSpecification(name, specification)
+    return {done: true}
 }
 
 export async function saveWorkspace(name: string, specification: string, readme: string){
     if(! await isWorkspace(name)){
-        await createWorkspace(name, specification, readme)
+        return await createWorkspace(name, specification, readme)
     }else{
         await writeReadme(name, readme)
         await writeSpecification(name, specification)
+        return {done: true}
     }
 }
 
@@ -138,6 +145,7 @@ export async function deleteWorkspace(name: string){
     if(!isWorkspace(name)) throw "Workspace doesn't exist"
     await downWorkspace(name)
     await rm(`${ROOT}/${name}`, { recursive: true, force: true });
+    return {done: true}
 }
 
 /// END WORKSPACE

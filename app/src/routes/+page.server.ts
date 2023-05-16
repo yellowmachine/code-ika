@@ -1,12 +1,15 @@
-import type { Actions } from '@sveltejs/kit';
-import { fail } from '@sveltejs/kit';
+import { type Actions, fail } from '@sveltejs/kit';
 import { getStates, upWorkspace, downWorkspace, saveWorkspace, deleteWorkspace } from './ika';
+import type { PageServerLoad } from './$types';
+
+export const load: PageServerLoad = async () => {
+    const ps = await getStates()
+    return {
+        ps
+    };
+}
 
 export const actions: Actions = {
-	async join({ request }) {
-        const ps = await getStates()
-		return {ps}
-	},
 
 	async up({ request }) {
 		const form = await request.formData();

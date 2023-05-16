@@ -1,21 +1,26 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { onMount } from 'svelte';
+	import type { PageData } from './$types';
 
-    type S = any[]
+    export let data: PageData;
+
+    type S = any
 
     type W = {
-        name: string,
         readme: string,
         specification: string,
-        services: S
+        services: S[]
     }
 
-    let state: W[] = []
+    let state: Record<string, W> = data.ps;
 
 	function subscribe() {
 		const sse = new EventSource('/');
-		sse.onmessage = (ev) => state = ev.data;
+		sse.onmessage = (ev) => {
+            console.log(ev)
+            state = ev.data.ps;
+        }
 		return () => sse.close();
 	}
 
@@ -25,9 +30,9 @@
     let name = "";
     let specification = "";
 
-    function edit(w: W){
+    function edit(k: string, w: W){
         readme = w.readme;
-        name = w.name;
+        name = k;
         specification = w.specification;
     }
 
@@ -35,9 +40,9 @@
 
 <main>
     <ul>
-        {#each state as workspace}
+        {#each Object.keys(state) as k}
         <li>
-            {workspace.name}
+            <h3>{k}</h3>
             <form
                 action={"?/up"}
                 method="post"
@@ -50,7 +55,13 @@
             >
                 <button>Stop</button>
             </form>    
-            <button on:click={() => edit(workspace)}>Edit</button>    
+            <button on:click={() => edit(k, state[k])}>Edit</button>
+            <form
+                action={"?/delete"}
+                method="post"
+            >
+                <button>Delete</button>
+            </form>        
         </li>
         {/each}
     </ul>

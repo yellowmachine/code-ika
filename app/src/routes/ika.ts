@@ -19,8 +19,16 @@ function startEmitter(){
 
     emitter.start();
 
-    emitter.on("_message", function(message: string) {
-        workspaceEmitter.emit('event', message)
+    //emitter.on("_message", function(message: string) {
+    //    workspaceEmitter.emit('event', message)
+    //});
+
+    emitter.on("start", function(message: string) {
+        workspaceEmitter.emit('event:ps', getStates())
+    });
+      
+    emitter.on("stop", function(message: string) {
+        workspaceEmitter.emit('event:ps', getStates())
     });
 
     return emitter.stop

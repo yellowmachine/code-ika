@@ -83,10 +83,8 @@ export async function getStates(){
             return await getWorkspaceState(`${ROOT}/${name}`)
         })
     )
-    
-    var obj: Record<string, {workspace: string, readme: string, specification: string, services: any}> = {};
-    dirs.forEach((key, i) => obj[key] = states[i]);
-    return obj
+
+    return states
 }
 
 const getWorkspaceState = async (workspace: string) => {

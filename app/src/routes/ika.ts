@@ -1,13 +1,14 @@
-const { readdir, readFile, writeFile, stat, rm } = require('fs/promises')
-const { v2: compose } = require('docker-compose')
-const path = require('path')
-const DockerEvents = require("docker-events")
-const Dockerode = require('dockerode');
-const { EventEmitter } = require('node:events');
+import { readdir, readFile, writeFile, stat, rm } from 'fs/promises';
+import { v2 as compose } from 'docker-compose';
+import  path from 'path';
+// @ts-ignore
+import DockerEvents from "docker-events";
+import Dockerode from 'dockerode';
+import { EventEmitter } from 'node:events';
 
 const ROOT = 'workspaces'
 
-const workspaceEmitter = new EventEmitter();
+export const workspaceEmitter = new EventEmitter();
 
 workspaceEmitter.on('event', (msg) => console.log('evento', msg))
 
@@ -18,14 +19,14 @@ function startEmitter(){
 
     emitter.start();
 
-    emitter.on("_message", function(message) {
+    emitter.on("_message", function(message: string) {
         workspaceEmitter.emit('event', message)
     });
 
     return emitter.stop
 }
 
-async function cmd(cmd, workspace, options){
+export async function cmd(cmd: "ps" | "upAll" | "down", workspace: string, options?: string[]){
     try{
         const res = await compose[cmd]({
             cwd: path.join(workspace),
@@ -39,38 +40,38 @@ async function cmd(cmd, workspace, options){
     }
 }
 
-async function read(source){
+async function read(source: string){
     return await readFile(source, "utf8")
 }
 
-async function readReadme(name){
+async function readReadme(name: string){
     return await read(`${ROOT}/${name}/README`)
 }
 
-async function readSpecification(name){
+async function readSpecification(name: string){
     return await read(`${ROOT}/${name}/docker-compose.yml`)
 }
 
-async function write(dest, txt){
+async function write(dest: string, txt: string){
     await writeFile(dest, txt, "utf8")
 }
 
-async function writeReadme(name, txt){
+async function writeReadme(name: string, txt: string){
     await write(`${ROOT}/${name}/README`, txt)
 }
 
-async function writeSpecification(name, txt){
+async function writeSpecification(name: string, txt: string){
     await write(`${ROOT}/${name}/docker-compose.yml`, txt)
 }
 
 /// WORKSPACE
 
-const getWorkspaces = async source =>
+const getWorkspaces = async (source: string) =>
   (await readdir(source, { withFileTypes: true }))
     .filter(dirent => dirent.isDirectory())
     .map(dirent => dirent.name)
 
-async function getStates(){    
+export async function getStates(){    
     const dirs = await getWorkspaces(ROOT)
     
     const states = await Promise.all(
@@ -79,48 +80,49 @@ async function getStates(){
         })
     )
     
-    var obj = {};
+    var obj: Record<string, {services: any}> = {};
     dirs.forEach((key, i) => obj[key] = states[i]);
     return obj
 }
 
-const getWorkspaceState = async (workspace) => {
+const getWorkspaceState = async (workspace: string) => {
+    // @ts-ignore
     return (await cmd('ps', workspace)).data
 }
 
-async function getWorkspace(name){
+async function getWorkspace(name: string){
     const readme = await readReadme(name)
     const specification = await readSpecification(name)
     return {readme, specification}
 }
 
-async function isWorkspace(name){
+async function isWorkspace(name: string){
     const err = await stat(`${ROOT}/${name}`)
     if(!err) return true
     else return false
 }
 
-async function upWorkspace(workspace){
+export async function upWorkspace(workspace: string){
     await cmd('upAll', `${ROOT}/${workspace}`)
 }
 
-async function downWorkspace(workspace){
+export async function downWorkspace(workspace: string){
     await cmd('down', `${ROOT}/${workspace}`)
 }
 
-async function createWorkspace(name, specification, readme){
-    if(isWorkspace(name)) throw "Workspace already exists"
+export async function createWorkspace(name: string, specification: string, readme: string){
+    if(await isWorkspace(name)) throw "Workspace already exists"
     await writeReadme(name, readme)
     await writeSpecification(name, specification)
 }
 
-async function updateWorkspace(name, specification, readme){
-    if(!isWorkspace(name)) throw "Workspace doesn't exist"
+export async function updateWorkspace(name: string, specification: string, readme: string){
+    if(! await isWorkspace(name)) throw "Workspace doesn't exist"
     await writeReadme(name, readme)
     await writeSpecification(name, specification)
 }
 
-async function deleteWorkspace(name){
+export async function deleteWorkspace(name: string){
     if(!isWorkspace(name)) throw "Workspace doesn't exist"
     await downWorkspace(name)
     await rm(`${ROOT}/${name}`, { recursive: true, force: true });

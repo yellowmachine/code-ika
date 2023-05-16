@@ -31,5 +31,10 @@
 		"vite": "^4.3.0",
 		"vitest": "^0.25.3"
 	},
-	"type": "module"
+	"type": "module",
+	"dependencies": {
+		"@types/dockerode": "^3.3.17",
+		"docker-compose": "^0.24.1",
+		"dockerode": "^3.3.5"
+	}
 }

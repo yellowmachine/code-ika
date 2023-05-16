@@ -1,4 +1,4 @@
-import { readdir, readFile, writeFile, stat, rm } from 'fs/promises';
+import { readdir, readFile, writeFile, stat, rm, mkdir } from 'fs/promises';
 import { v2 as compose } from 'docker-compose';
 import  path from 'path';
 // @ts-ignore
@@ -120,14 +120,18 @@ export async function downWorkspace(workspace: string){
 
 export async function createWorkspace(name: string, specification: string, readme: string){
     if(await isWorkspace(name)) throw "Workspace already exists"
+    await mkdir(`${ROOT}/${name}`)
     await writeReadme(name, readme)
     await writeSpecification(name, specification)
 }
 
 export async function updateWorkspace(name: string, specification: string, readme: string){
-    if(! await isWorkspace(name)) throw "Workspace doesn't exist"
-    await writeReadme(name, readme)
-    await writeSpecification(name, specification)
+    if(! await isWorkspace(name)){
+        await createWorkspace(name, specification, readme)
+    }else{
+        await writeReadme(name, readme)
+        await writeSpecification(name, specification)
+    }
 }
 
 export async function deleteWorkspace(name: string){

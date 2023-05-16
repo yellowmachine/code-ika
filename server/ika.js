@@ -131,15 +131,15 @@ async function deleteWorkspace(name){
 // MAIN, testing API
 
 async function main(){
-    const stop = startEmitter()
+    await upWorkspace('ika')
+    //const stop = startEmitter()
     const x = await getStates()
-    console.log(x)
+    console.log(JSON.stringify(x.ika))
 
     const w = await getWorkspace('ika')
     console.log(w)
-    await upWorkspace('ika')
     await downWorkspace('ika')
-    stop()
+    //stop()
 }
 
 main()

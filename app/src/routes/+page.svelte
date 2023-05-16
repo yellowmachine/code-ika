@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	//import { invalidate } from '$app/navigation';
 	import { onMount } from 'svelte';
 
     type S = any[]
@@ -35,7 +34,6 @@
 </script>
 
 <main>
-
     <ul>
         {#each state as workspace}
         <li>
@@ -60,9 +58,7 @@
     <form
         action={"?/update"}
         method="post"
-        on:reset={() => console.log('reset')}
         use:enhance={() =>
-            /* prevent `form` prop being auto updated  */
             ({ form, result, update }) => {
                 if (result.type === 'success') {
                     name = ""

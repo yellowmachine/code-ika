@@ -118,14 +118,14 @@ export async function downWorkspace(workspace: string){
     await cmd('down', `${ROOT}/${workspace}`)
 }
 
-export async function createWorkspace(name: string, specification: string, readme: string){
+async function createWorkspace(name: string, specification: string, readme: string){
     if(await isWorkspace(name)) throw "Workspace already exists"
     await mkdir(`${ROOT}/${name}`)
     await writeReadme(name, readme)
     await writeSpecification(name, specification)
 }
 
-export async function updateWorkspace(name: string, specification: string, readme: string){
+export async function saveWorkspace(name: string, specification: string, readme: string){
     if(! await isWorkspace(name)){
         await createWorkspace(name, specification, readme)
     }else{

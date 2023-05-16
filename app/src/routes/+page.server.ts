@@ -1,6 +1,6 @@
 import type { Actions } from '@sveltejs/kit';
 import { fail } from '@sveltejs/kit';
-import { getStates, upWorkspace, downWorkspace, createWorkspace, updateWorkspace, deleteWorkspace } from './ika';
+import { getStates, upWorkspace, downWorkspace, saveWorkspace, deleteWorkspace } from './ika';
 
 export const actions: Actions = {
 	async join({ request }) {
@@ -26,7 +26,7 @@ export const actions: Actions = {
         return {response}
 	},
 
-    async create({ request }) {
+    async save({ request }) {
 		const form = await request.formData();
 		const workspace = form.get('workspace')?.toString();
         const readme = form.get('readme')?.toString();
@@ -34,19 +34,7 @@ export const actions: Actions = {
         
 		if (! workspace || ! readme || ! specification) return fail(400, { message: 'Please specify workspace!' });
         
-        const response = await createWorkspace(workspace, readme, specification)
-        return {response}
-	},
-
-    async update({ request }) {
-		const form = await request.formData();
-		const workspace = form.get('workspace')?.toString();
-        const readme = form.get('readme')?.toString();
-        const specification = form.get('specification')?.toString();
-        
-		if (! workspace || ! readme || ! specification) return fail(400, { message: 'Please specify workspace!' });
-        
-        const response = await updateWorkspace(workspace, readme, specification)
+        const response = await saveWorkspace(workspace, readme, specification)
         return {response}
 	},
 

@@ -1,4 +1,4 @@
-import { workspaceEmitter } from './ika';
+import { workspaceEmitter } from '../lib/ika';
 
 /** @type {import('./$types').RequestHandler} */
 export const GET = () => {

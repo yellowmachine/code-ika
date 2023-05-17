@@ -1,5 +1,5 @@
 import { type Actions, fail } from '@sveltejs/kit';
-import { getStates, upWorkspace, downWorkspace, saveWorkspace, deleteWorkspace } from './ika';
+import { getStates, upWorkspace, downWorkspace, saveWorkspace, deleteWorkspace } from '../lib/ika';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async () => {

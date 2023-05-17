@@ -19,6 +19,7 @@
 <h3>{data.workspace}</h3>
 <Services data={data.services} />
 
+{#if data.isValid}
 <form
     action={"?/up"}
     method="post"
@@ -27,6 +28,9 @@
         Up
     </button>
 </form>
+{:else}
+    <div class="text-red font-bold">Errors in config file</div>
+{/if}
 
 {#if data.services.length > 0}
 <form
@@ -39,7 +43,9 @@
 </form>
 {/if}
 
+{#if data.services.length === 0}
 <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" on:click={() => edit(data.workspace)}>Edit</button>
+{/if}
 
 {#if data.services.length === 0}
 <form

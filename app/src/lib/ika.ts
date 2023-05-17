@@ -5,6 +5,7 @@ import  path from 'path';
 import DockerEvents from "@direktspeed/docker-events";
 import Dockerode from 'dockerode';
 import { EventEmitter } from 'node:events';
+import type { WORKSPACE } from './types'
 
 const ROOT = "/home/miguel/dev/docker/code01/server/workspaces"
 
@@ -30,10 +31,10 @@ function startEmitter(){
 
 startEmitter()
 
-export async function cmd(cmd: "ps" | "upAll" | "down", workspace: string, options?: string[]){
+export async function cmd(cmd: "ps" | "upAll" | "down" | "config", workspace: string, options?: string[]){
     try{
         const res = await compose[cmd]({
-            cwd: path.join(workspace),
+            cwd: workspace,
             commandOptions: options
         })
         return res
@@ -70,6 +71,10 @@ async function writeSpecification(name: string, txt: string){
 
 /// WORKSPACE
 
+export async function isValidConfig(name: string){
+    return await cmd("config", name)
+}
+
 const getWorkspaces = async (source: string) =>
   (await readdir(source, { withFileTypes: true }))
     .filter(dirent => dirent.isDirectory())
@@ -93,13 +98,17 @@ const getWorkspaceState = async (workspace: string) => {
     const services = (await cmd('ps', p)).data.services
     const readme = await readReadme(p)
     const specification = await readSpecification(p)
+    const configError = (await cmd('config', p)).exitCode
     
-    return {
+    const ret: WORKSPACE = {
         workspace,
         readme,
         specification,
+        isValid: configError === 0 ? true: false,
         services
     }
+
+    return ret
 }
 
 async function getWorkspace(name: string){

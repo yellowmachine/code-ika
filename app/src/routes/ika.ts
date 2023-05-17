@@ -90,7 +90,7 @@ export async function getStates(){
 const getWorkspaceState = async (workspace: string) => {
     const p = path.join(ROOT, workspace)
     // @ts-ignore
-    const services = (await cmd('ps', p)).data
+    const services = (await cmd('ps', p)).data.services
     const readme = await readReadme(p)
     const specification = await readSpecification(p)
     

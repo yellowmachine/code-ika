@@ -2,4 +2,4 @@ services:
   node-v2: 
     image: nodecode
     ports: 
-      - 8080:8080
+      - 8080

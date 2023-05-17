@@ -4,5 +4,8 @@
     export let data: WORKSPACE["services"][number];
 </script>
 
-<pre>{JSON.stringify(data)}</pre>
-<div>You will click here to open a code tab for some exposed port, or a view of an app</div>
+<ul>
+{#each data.ports as port}
+    <li><a target="_blank" href={`${document.location}:${port.mapped?.port}`}>Open {port.exposed.port}</a></li>
+{/each}
+</ul>

@@ -24,7 +24,9 @@
             action={"?/up"}
             method="post"
         >
-            <button>Start</button>
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            Up
+        </button>
         </form>
     </li>
     <li>
@@ -32,7 +34,9 @@
             action={"?/down"}
             method="post"
         >
-            <button>Stop</button>
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            Down
+        </button>
         </form>
     </li>
     <li>    
@@ -43,7 +47,9 @@
             action={"?/delete"}
             method="post"
         >
-            <button>Delete</button>
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            Delete
+        </button>
         </form>        
     </li>
 </ul>

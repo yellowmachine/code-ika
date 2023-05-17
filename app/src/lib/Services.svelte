@@ -1,6 +1,7 @@
 <script lang="ts">
     import Service from './Service.svelte'
-    export let data: {name: string}[] = []
+	import type { WORKSPACE } from './types';
+    export let data: WORKSPACE["services"] = []
 </script>
 
 <div>

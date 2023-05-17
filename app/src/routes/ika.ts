@@ -10,8 +10,6 @@ const ROOT = "/home/miguel/dev/docker/code01/server/workspaces"
 
 export const workspaceEmitter = new EventEmitter();
 
-//workspaceEmitter.on('event', (msg) => console.log('evento', msg))
-
 function startEmitter(){
     const emitter = new DockerEvents({
         docker: new Dockerode({socketPath: '/var/run/docker.sock'}),
@@ -29,6 +27,8 @@ function startEmitter(){
 
     return emitter.stop
 }
+
+startEmitter()
 
 export async function cmd(cmd: "ps" | "upAll" | "down", workspace: string, options?: string[]){
     try{

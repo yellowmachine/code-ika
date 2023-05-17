@@ -1,6 +1,8 @@
 <script lang="ts">
-    export let data: {name: string};
+	import type { WORKSPACE } from "./types";
+
+    export let data: WORKSPACE["services"][number];
 </script>
 
-
-<h3>{data.name}</h3>
+<pre>{JSON.stringify(data)}</pre>
+<div>You will click here to open a code tab for some exposed port, or a view of an app</div>

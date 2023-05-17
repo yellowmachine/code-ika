@@ -33,6 +33,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@direktspeed/docker-events": "0.0.0-pre1",
 		"@types/dockerode": "^3.3.17",
 		"docker-compose": "^0.24.1",
 		"dockerode": "^3.3.5"

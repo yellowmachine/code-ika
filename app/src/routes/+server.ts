@@ -8,6 +8,9 @@ export const GET = () => {
 			workspaceEmitter.on('event:ps', (msg: any) => {
 				controller.enqueue('data: ' + JSON.stringify(msg) + "\n\n");
 			});
+			workspaceEmitter.on('event:log', (msg: any) => {
+				controller.enqueue('data: ' + JSON.stringify(msg) + "\n\n");
+			});
 		},
 		cancel() {
 			

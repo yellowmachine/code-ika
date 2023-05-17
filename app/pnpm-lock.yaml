@@ -10,6 +10,9 @@ dependencies:
   '@unocss/extractor-svelte':
     specifier: ^0.51.13
     version: 0.51.13
+  clarinet:
+    specifier: ^0.12.5
+    version: 0.12.5
   docker-compose:
     specifier: ^0.24.1
     version: 0.24.1
@@ -1079,6 +1082,11 @@ packages:
 
   /chownr@1.1.4:
     resolution: {integrity: sha512-jJ0bqzaylmJtVnNgzTeSOs8DPavpbYgEr/b0YL8/2GO3xJEhInFmhKMUnEJQjZumK7KXGFhUy89PrsJWlakBVg==}
+    dev: false
+
+  /clarinet@0.12.5:
+    resolution: {integrity: sha512-4833ySquSUW91fnPaYI94LX3OdnyfwD8/NrMi6a4Kt6EmOsphLWmEzx9bZPqO9+DtQzSv2s3WSYNLsrXt59FKg==}
+    engines: {chrome: '>=16.0.912', firefox: '>=0.8.0', node: '>=0.3.6'}
     dev: false
 
   /color-convert@2.0.1:

@@ -2,7 +2,7 @@ import { readdir, readFile, writeFile, stat, rm, mkdir } from 'fs/promises';
 import { v2 as compose } from 'docker-compose';
 import  path from 'path';
 // @ts-ignore
-import DockerEvents from "docker-events";
+import DockerEvents from "@direktspeed/docker-events";
 import Dockerode from 'dockerode';
 import { EventEmitter } from 'node:events';
 
@@ -49,11 +49,11 @@ async function read(source: string){
 }
 
 async function readReadme(name: string){
-    return await read(`${ROOT}/${name}/README`)
+    return await read(`${name}/README`)
 }
 
 async function readSpecification(name: string){
-    return await read(`${ROOT}/${name}/docker-compose.yml`)
+    return await read(`${name}/docker-compose.yml`)
 }
 
 async function write(dest: string, txt: string){
@@ -61,11 +61,11 @@ async function write(dest: string, txt: string){
 }
 
 async function writeReadme(name: string, txt: string){
-    await write(`${ROOT}/${name}/README`, txt)
+    await write(`${name}/README`, txt)
 }
 
 async function writeSpecification(name: string, txt: string){
-    await write(`${ROOT}/${name}/docker-compose.yml`, txt)
+    await write(`${name}/docker-compose.yml`, txt)
 }
 
 /// WORKSPACE
@@ -80,7 +80,7 @@ export async function getStates(){
     
     const states = await Promise.all(
         dirs.map(async (name) => {
-            return await getWorkspaceState(`${ROOT}/${name}`)
+            return await getWorkspaceState(name)
         })
     )
 
@@ -88,10 +88,11 @@ export async function getStates(){
 }
 
 const getWorkspaceState = async (workspace: string) => {
+    const p = path.join(ROOT, workspace)
     // @ts-ignore
-    const services = (await cmd('ps', workspace)).data
-    const readme = await readReadme(workspace)
-    const specification = await readSpecification(workspace)
+    const services = (await cmd('ps', p)).data
+    const readme = await readReadme(p)
+    const specification = await readSpecification(p)
     
     return {
         workspace,
@@ -147,19 +148,3 @@ export async function deleteWorkspace(name: string){
 }
 
 /// END WORKSPACE
-
-// MAIN, testing API
-
-async function main(){
-    const stop = startEmitter()
-    const x = await getStates()
-    console.log(x)
-
-    const w = await getWorkspace('ika')
-    console.log(w)
-    await upWorkspace('ika')
-    await downWorkspace('ika')
-    stop()
-}
-
-main()

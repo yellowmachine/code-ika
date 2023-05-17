@@ -1,8 +1,18 @@
 <script lang="ts">
+    import { createEventDispatcher } from 'svelte';
+
     import type { WORKSPACE } from "./types";
     import Services from "./Services.svelte";
     
     export let data: WORKSPACE;
+
+    const dispatch = createEventDispatcher<{edit:{workspace:string}}>()
+
+    function edit(workspace: string){
+        dispatch('edit', {
+			workspace
+		});
+    }
 </script>
 
 
@@ -25,10 +35,9 @@
             <button>Stop</button>
         </form>
     </li>
-    <!--<li>    
-        <button on:click={() => edit(data)}>Edit</button>
+    <li>    
+        <button on:click={() => edit(data.workspace)}>Edit</button>
     </li>
-    -->
     <li>
         <form
             action={"?/delete"}

@@ -20,11 +20,18 @@
 
 	onMount(subscribe);
 
+    function edit(event: CustomEvent<{workspace:string}>){
+        workspace = event.detail.workspace
+    }
+
+    let workspace: string|null = null
+    $: editWorkspace = workspace === null ? null : state.filter(x => x.workspace === workspace)[0]
+
 </script>
 
 <main>
-    <Workspaces data={state} />
-    <Form />
+    <Workspaces on:edit={edit} data={state} />
+    <Form workspace={editWorkspace} />
 </main>
 
 <style>

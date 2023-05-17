@@ -1,9 +1,17 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+    import type { WORKSPACE } from './types';
+    export let workspace: WORKSPACE|null;
 
     let readme = "";
     let name = "";
     let specification = "";
+
+    $: if(workspace !== null){
+        name = workspace.workspace
+        readme = workspace.readme
+        specification = workspace.specification
+    }
 </script>
 
 <form

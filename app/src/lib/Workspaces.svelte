@@ -11,6 +11,6 @@
 <div>
     <input type="text" bind:value={filter} />
     {#each filtered as workspace}
-        <Workspace data={workspace} />
+        <Workspace on:edit data={workspace} />
     {/each}
 </div>

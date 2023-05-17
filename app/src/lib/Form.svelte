@@ -30,5 +30,7 @@
     <input type="text" name="workspace" value={name} placeholder="Workspace name" required />
     <textarea rows="3" name="readme" value={readme} placeholder="Description" required />
     <textarea rows="5" name="specification" value={specification} placeholder="docker-compose.yml content" required />
-    <button>Save</button>
+    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+        Save
+    </button>
 </form>

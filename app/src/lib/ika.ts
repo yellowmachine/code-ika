@@ -29,7 +29,7 @@ function startEmitter(){
     return emitter.stop
 }
 
-startEmitter()
+//startEmitter()
 
 export async function cmd(cmd: "ps" | "upAll" | "down" | "config", workspace: string, options?: string[]){
     try{

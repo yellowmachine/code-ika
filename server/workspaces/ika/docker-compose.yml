@@ -3,4 +3,9 @@ services:
     image: nodecode
     ports: 
       - 8080
-    command: "git clone https://github.com/yellowmachine/ypipe.git .&; code-server"
+    command:
+      - /bin/sh
+      - -c
+      - |
+        git clone https://github.com/yellowmachine/ypipe.git
+        code-server

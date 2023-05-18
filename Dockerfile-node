@@ -8,4 +8,6 @@ RUN apt-get install -y \
 RUN npm config set python python3
 RUN npm install --global code-server --unsafe-perm
 
+WORKDIR /project
+
 CMD code-server

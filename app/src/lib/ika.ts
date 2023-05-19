@@ -18,18 +18,35 @@ function startEmitter(){
 
     emitter.start();
 
-    emitter.on("start", function(message: string) {
-        workspaceEmitter.emit('event:ps', getStates())
+    emitter.on("_message", async function(message: string) {
+        console.log("got a message from docker: %j", message);
+        workspaceEmitter.emit('event:ps', await getStates())
+      });
+
+    emitter.on("start", async function(message: string) {
+        console.log(getStates())
+        workspaceEmitter.emit('event:ps', await getStates())
     });
       
-    emitter.on("stop", function(message: string) {
-        workspaceEmitter.emit('event:ps', getStates())
+    emitter.on("stop", async function(message: string) {
+        console.log(getStates())
+        workspaceEmitter.emit('event:ps', await getStates())
+    });
+
+    emitter.on("create", async function(message: string) {
+        console.log(getStates())
+        workspaceEmitter.emit('event:ps', await getStates())
+    });
+      
+    emitter.on("destroy", async function(message: string) {
+        console.log(getStates())
+        workspaceEmitter.emit('event:ps', await getStates())
     });
 
     return emitter.stop
 }
 
-//startEmitter()
+startEmitter()
 
 export async function cmd(cmd: "ps" | "upAll" | "down" | "config", workspace: string, options?: string[]){
     try{

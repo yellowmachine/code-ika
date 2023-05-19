@@ -30,13 +30,9 @@
 </script>
 
 <main>
-    <div class="columns-2">
-        <div class="w-full">
-            <Workspaces on:edit={edit} data={state} />
-        </div>
-        <div class="w-full">
-            <Form workspace={editWorkspace} />
-        </div>
+      <div class="grid grid-cols-3 gap-4">
+        <Workspaces on:edit={edit} data={state} />
+        <Form workspace={editWorkspace} />
       </div>
 </main>
 

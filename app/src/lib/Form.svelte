@@ -15,7 +15,7 @@
 </script>
 
 <form
-    action={"?/update"}
+    action={"?/save"}
     method="post"
     use:enhance={() =>
         ({ form, result, update }) => {

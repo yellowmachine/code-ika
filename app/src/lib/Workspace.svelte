@@ -2,14 +2,7 @@
     import type { WORKSPACE } from "./types";
     import Services from "./Services.svelte";
 	import Actions from './Actions.svelte';
-    import { onMount } from 'svelte';
-
-    let MyComponent;
-
-    onMount(async () => {
-        const module = await import('./H.svelte');
-        MyComponent = module.default;
-    });
+    import H from "./H.svelte";
 
     export let data: WORKSPACE;
 
@@ -17,6 +10,6 @@
 
 <h3>{data.workspace}</h3>
 <div>{data.readme}</div>
-<svelte:component this={MyComponent} code={data.specification} />
+<H code={data.specification} />
 <Services data={data.services} />
 <Actions {data} on:edit />

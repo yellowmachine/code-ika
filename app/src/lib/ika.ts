@@ -1,4 +1,4 @@
-import { readdir, readFile, writeFile, stat, rm, mkdir } from 'fs/promises';
+import { readdir, readFile, writeFile, lstat, rm, mkdir } from 'fs/promises';
 import { v2 as compose } from 'docker-compose';
 import  path from 'path';
 // @ts-ignore
@@ -118,9 +118,7 @@ async function getWorkspace(name: string){
 }
 
 async function isWorkspace(name: string){
-    const err = await stat(`${ROOT}/${name}`)
-    if(!err) return true
-    else return false
+    return (await lstat(name)).isDirectory()
 }
 
 export async function upWorkspace(workspace: string){
@@ -128,7 +126,7 @@ export async function upWorkspace(workspace: string){
 }
 
 export async function downWorkspace(workspace: string){
-    return await cmd('down', `${ROOT}/${workspace}`)
+    return await cmd('down', workspace)
 }
 
 async function createWorkspace(name: string, specification: string, readme: string){
@@ -140,19 +138,21 @@ async function createWorkspace(name: string, specification: string, readme: stri
 }
 
 export async function saveWorkspace(name: string, specification: string, readme: string){
-    if(! await isWorkspace(name)){
-        return await createWorkspace(name, specification, readme)
+    const p = `${ROOT}/${name}`
+    if(! await isWorkspace(p)){
+        return await createWorkspace(p, readme, specification)
     }else{
-        await writeReadme(name, readme)
-        await writeSpecification(name, specification)
+        await writeReadme(p, readme)
+        await writeSpecification(p, specification)
         return {done: true}
     }
 }
 
 export async function deleteWorkspace(name: string){
-    if(!isWorkspace(name)) throw "Workspace doesn't exist"
-    await downWorkspace(name)
-    await rm(`${ROOT}/${name}`, { recursive: true, force: true });
+    const p = `${ROOT}/${name}`
+    if(!isWorkspace(p)) throw "Workspace doesn't exist"
+    await downWorkspace(p)
+    await rm(p, { recursive: true, force: true });
     return {done: true}
 }
 

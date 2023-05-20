@@ -6,12 +6,9 @@ RUN apt-get install -y \
   pkg-config \
   python3
 
-RUN curl -sL https://deb.nodesource.com/setup_16.x | bash -
-RUN apt-get install -y nodejs
-RUN npm config set python python3
-RUN npm install --global minimist vscode-textmate @microsoft/1ds-core-js yauzl yazl spdlog vscode-regexpp vscode-proxy-agent @vscode/ripgrep xterm-headless keytar @parcel/watcher
-RUN npm install --global code-server --unsafe-perm
+RUN curl -fsSL https://code-server.dev/install.sh | sh
 
+COPY config.yaml /root/.config/code-server/
 WORKDIR /project
 
 CMD code-server

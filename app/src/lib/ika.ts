@@ -7,7 +7,7 @@ import Dockerode from 'dockerode';
 import { EventEmitter } from 'node:events';
 import type { WORKSPACE } from './types'
 
-const ROOT = "/home/miguel/dev/docker/code01/server/workspaces"
+const ROOT = "/workspaces"
 
 export const workspaceEmitter = new EventEmitter();
 
@@ -49,6 +49,7 @@ function startEmitter(){
 //startEmitter()
 
 export async function cmd(cmd: "ps" | "upAll" | "down" | "config", workspace: string, options?: string[]){
+    console.log('***', cmd, workspace, options)
     try{
         const res = await compose[cmd]({
             cwd: workspace,

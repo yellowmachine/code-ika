@@ -1,7 +1,7 @@
 # Dockerfile
 FROM node:16-alpine
 
-RUN apk add docker
+RUN apk add docker docker-cli-compose
 
 RUN npm install -g pnpm
 WORKDIR /app

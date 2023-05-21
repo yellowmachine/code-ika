@@ -11,41 +11,25 @@ export const router = t.router({
     z.object({workspace: z.string()})
   ).mutation(async ({ input }) => {
     await upWorkspace(input.workspace)
-    const ps = await getStates()
-    return {
-        success: true,
-        data: ps
-    };
+    return await getStates()
   }),
   down: t.procedure.input(
     z.object({workspace: z.string()})
   ).mutation(async ({ input }) => {
     await downWorkspace(input.workspace)
-    const ps = await getStates()
-    return {
-        success: true,
-        data: ps
-    };
+    return await getStates()
   }),
   delete: t.procedure.input(
     z.object({workspace: z.string()})
   ).mutation(async ({ input }) => {
     await deleteWorkspace(input.workspace)
-    const ps = await getStates()
-    return {
-        success: true,
-        data: ps
-    };
+    return await getStates()
   }),
   save: t.procedure.input(
     z.object({workspace: z.string(), readme: z.string(), specification: z.string()})
   ).mutation(async ({ input }) => {
     await saveWorkspace(input.workspace, input.readme, input.specification)
-    const ps = await getStates()
-    return {
-        success: true,
-        data: ps
-    };
+    return await getStates()
   })
 });
 

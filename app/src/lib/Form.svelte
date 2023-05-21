@@ -14,7 +14,7 @@
 
     async function onSave(){
         loading = true;
-        const response = await trpc().save.mutate(data);
+        await trpc().save.mutate(data);
         loading = false;
     }
 

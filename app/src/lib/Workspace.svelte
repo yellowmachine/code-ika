@@ -21,30 +21,30 @@
     async function onUp(event: CustomEvent<{workspace:string}>){
         const workspace = event.detail.workspace
         loading = true;
-        const response = await trpc($page).up.mutate({workspace});
+        const state = await trpc($page).up.mutate({workspace});
         loading = false;
         dispatch('state', {
-			state: response.data
+			state
 		});
     }
 
     async function onDown(event: CustomEvent<{workspace:string}>){
         const workspace = event.detail.workspace
         loading = true;
-        const response = await trpc($page).down.mutate({workspace});
+        const state = await trpc($page).down.mutate({workspace});
         loading = false;
         dispatch('state', {
-			state: response.data
+			state
 		});
     }
 
     async function onDelete(event: CustomEvent<{workspace:string}>){
         const workspace = event.detail.workspace
         loading = true;
-        const response = await trpc($page).delete.mutate({workspace});
+        const state = await trpc($page).delete.mutate({workspace});
         loading = false;
         dispatch('state', {
-			state: response.data
+			state
 		});
     }
 

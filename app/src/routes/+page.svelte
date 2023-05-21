@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount, onDestroy } from 'svelte';
-    import {invalidate} from '$app/navigation';
+    import {invalidateAll} from '$app/navigation';
 	import type { PageData } from './$types';
     import Workspaces from '../lib/Workspaces.svelte';
     import type { WORKSPACE } from '../lib/types';
@@ -25,11 +25,10 @@
         workspace = event.detail.workspace
     }
 
-    const interval = setInterval(invalidate, 5000);
-
-	onDestroy(() => {
-		clearInterval(interval);
-	});
+    //const interval = setInterval(invalidateAll, 5000);
+	//onDestroy(() => {
+	//	clearInterval(interval);
+	//});
 
     let workspace: string|null = null
     $: editWorkspace = workspace === null ? null : state.filter(x => x.workspace === workspace)[0]

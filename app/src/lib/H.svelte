@@ -1,5 +1,4 @@
 <script lang="ts">
-    import yaml from "svelte-highlight/languages/yaml";
     import atomOneDark from "svelte-highlight/styles/atom-one-dark";
 
     import { onMount } from 'svelte';
@@ -12,10 +11,11 @@
     });
 
     export let code: string;
+    export let language;
 </script>
   
 <svelte:head>
   {@html atomOneDark}
 </svelte:head>
 
-<svelte:component this={H} language={yaml} {code}  />
+<svelte:component this={H} {language} {code}  />

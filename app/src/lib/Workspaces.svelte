@@ -9,6 +9,7 @@
 </script>
 
 <div>
+    <h3>Filter by name</h3>
     <input type="text" bind:value={filter} />
     {#each filtered as workspace}
         <Workspace on:edit data={workspace} />

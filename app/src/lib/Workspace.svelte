@@ -5,8 +5,48 @@
     import Services from "./Services.svelte";
 	import Actions from './Actions.svelte';
     import H from "./H.svelte";
+    import { page } from '$app/stores';
+    import { trpc } from '$lib/trpc/client';
+
+    import { createEventDispatcher } from 'svelte';
+
+    const dispatch = createEventDispatcher<{ 
+        state:{state:WORKSPACE[]}
+    }>()
+
 
     export let data: WORKSPACE;
+    let loading = false;
+
+    async function onUp(event: CustomEvent<{workspace:string}>){
+        const workspace = event.detail.workspace
+        loading = true;
+        const response = await trpc($page).up.query({workspace});
+        loading = false;
+        dispatch('state', {
+			state: response.data
+		});
+    }
+
+    async function onDown(event: CustomEvent<{workspace:string}>){
+        const workspace = event.detail.workspace
+        loading = true;
+        const response = await trpc($page).down.query({workspace});
+        loading = false;
+        dispatch('state', {
+			state: response.data
+		});
+    }
+
+    async function onDelete(event: CustomEvent<{workspace:string}>){
+        const workspace = event.detail.workspace
+        loading = true;
+        const response = await trpc($page).delete.query({workspace});
+        loading = false;
+        dispatch('state', {
+			state: response.data
+		});
+    }
 
 </script>
 
@@ -14,4 +54,4 @@
 <H code={data.readme} language={md} />
 <H code={data.specification} language={yaml} />
 <Services data={data.services} />
-<Actions {data} />
+<Actions on:edit on:up={onUp} on:down={onDown} on:delete={onDelete} {loading} {data} />

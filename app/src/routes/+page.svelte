@@ -4,10 +4,7 @@
     import Workspaces from '../lib/Workspaces.svelte';
     import type { WORKSPACE } from '../lib/types';
     import Form from '../lib/Form.svelte';
-    import { page } from '$app/stores';
-    import { trpc } from '$lib/trpc/client';
 
-    let loading = false;
     export let data: PageData;
 
     let state: WORKSPACE[] = data.ps;
@@ -23,32 +20,12 @@
 
 	onMount(subscribe);
 
-    function edit(event: CustomEvent<{workspace:string}>){
+    function onEdit(event: CustomEvent<{workspace:string}>){
         workspace = event.detail.workspace
     }
 
-    async function up(event: CustomEvent<{workspace:string}>){
-        workspace = event.detail.workspace
-        loading = true;
-        const response = await trpc($page).up.query({workspace});
-        state = response.data;
-        loading = false;
-    }
-
-    async function down(event: CustomEvent<{workspace:string}>){
-        workspace = event.detail.workspace
-        loading = true;
-        const response = await trpc($page).down.query({workspace});
-        state = response.data;
-        loading = false;
-    }
-
-    async function delete_(event: CustomEvent<{workspace:string}>){
-        workspace = event.detail.workspace
-        loading = true;
-        const response = await trpc($page).delete.query({workspace});
-        state = response.data;
-        loading = false;
+    function onState(event: CustomEvent<{state:WORKSPACE[]}>){
+        state = event.detail.state
     }
 
     //const interval = setInterval(invalidateAll, 5000);
@@ -63,7 +40,7 @@
 
 <main>
       <div class="grid grid-cols-3 gap-4">
-        <Workspaces on:edit={edit} data={state} on:up={up} on:down={down} on:delete={delete_} />
+        <Workspaces on:edit={onEdit} on:state={onState} />
         <Form workspace={editWorkspace} />
       </div>
 </main>

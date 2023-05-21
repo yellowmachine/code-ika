@@ -7,7 +7,8 @@ import Dockerode from 'dockerode';
 import { EventEmitter } from 'node:events';
 import type { WORKSPACE } from './types'
 
-const ROOT = "/workspaces"
+console.log(import.meta.env.ROOT)
+const ROOT = import.meta.env.ROOT || "/workspaces"
 
 export const workspaceEmitter = new EventEmitter();
 

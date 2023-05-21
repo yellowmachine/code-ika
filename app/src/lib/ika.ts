@@ -49,7 +49,6 @@ function startEmitter(){
 //startEmitter()
 
 export async function cmd(cmd: "ps" | "upAll" | "down" | "config", workspace: string, options?: string[]){
-    console.log('***', cmd, workspace, options)
     try{
         const res = await compose[cmd]({
             cwd: workspace,
@@ -155,7 +154,7 @@ async function createWorkspace(name: string, specification: string, readme: stri
     return {done: true}
 }
 
-export async function saveWorkspace(name: string, specification: string, readme: string){
+export async function saveWorkspace(name: string, readme: string, specification: string){
     const p = `${ROOT}/${name}`
     if(! await isWorkspace(p)){
         return await createWorkspace(p, readme, specification)

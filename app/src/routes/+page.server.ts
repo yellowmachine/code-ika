@@ -12,6 +12,7 @@ export const load: PageServerLoad = async () => {
 export const actions: Actions = {
 
 	async up({ request }) {
+        console.log('up', request)
 		const form = await request.formData();
 		const workspace = form.get('workspace')?.toString();
 		if (! workspace) return fail(400, { message: 'Please specify workspace!' });
@@ -25,6 +26,7 @@ export const actions: Actions = {
 	},
 
     async down({ request }) {
+        console.log('down', request)
 		const form = await request.formData();
 		const workspace = form.get('workspace')?.toString();
 		if (! workspace) return fail(400, { message: 'Please specify workspace!' });
@@ -38,6 +40,7 @@ export const actions: Actions = {
 	},
 
     async save({ request }) {
+        console.log('save', request)
 		const form = await request.formData();
 		const workspace = form.get('workspace')?.toString();
         const readme = form.get('readme')?.toString();

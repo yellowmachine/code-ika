@@ -40,7 +40,7 @@
 
 <main>
       <div class="grid grid-cols-3 gap-4">
-        <Workspaces on:edit={onEdit} on:state={onState} />
+        <Workspaces on:edit={onEdit} on:state={onState} data={state} />
         <Form workspace={editWorkspace} />
       </div>
 </main>

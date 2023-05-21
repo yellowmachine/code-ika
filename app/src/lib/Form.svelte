@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { enhance } from '$app/forms';
     import type { WORKSPACE } from './types';
     import { page } from '$app/stores';
     import { trpc } from '$lib/trpc/client';
@@ -16,7 +15,7 @@
 
     async function onSave(){
         loading = true;
-        const response = await trpc($page).save.mutate(data);
+        const response = await trpc().save.mutate(data);
         loading = false;
     }
 
@@ -25,6 +24,9 @@
     }
 </script>
 
+{#if loading}
+Saving...
+{:else}
 <input 
     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
     type="text" name="workspace" value={data.workspace} placeholder="Workspace name" required />
@@ -37,3 +39,4 @@
 <button on:click={onSave} class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
     Save
 </button>
+{/if}

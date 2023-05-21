@@ -3,6 +3,8 @@ import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async () => {
     const ps = await getStates()
+
+    console.log(ps)
     return {
         ps
     };

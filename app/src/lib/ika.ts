@@ -6,9 +6,9 @@ import DockerEvents from "@direktspeed/docker-events";
 import Dockerode from 'dockerode';
 import { EventEmitter } from 'node:events';
 import type { WORKSPACE } from './types'
+import { ROOT } from '$env/static/private';
 
-console.log(`x${import.meta.env.ROOT}x`)
-const ROOT = import.meta.env.ROOT || "/workspaces"
+const rootPath = ROOT || "/workspaces"
 
 export const workspaceEmitter = new EventEmitter();
 
@@ -99,19 +99,18 @@ const getWorkspaces = async (source: string) =>
     .map(dirent => dirent.name)
 
 export async function getStates(){    
-    const dirs = await getWorkspaces(ROOT)
+    const dirs = await getWorkspaces(rootPath)
     
     const states = await Promise.all(
         dirs.map(async (name) => {
             return await getWorkspaceState(name)
         })
     )
-
     return states
 }
 
 const getWorkspaceState = async (workspace: string) => {
-    const p = path.join(ROOT, workspace)
+    const p = path.join(rootPath, workspace)
     // @ts-ignore
     const services = (await cmd('ps', p)).data.services
     const readme = await readReadme(p)
@@ -140,7 +139,7 @@ async function isWorkspace(name: string){
 }
 
 export async function upWorkspace(workspace: string){
-    return await cmd('upAll', `${ROOT}/${workspace}`)
+    return await cmd('upAll', `${rootPath}/${workspace}`)
 }
 
 export async function downWorkspace(workspace: string){
@@ -149,14 +148,14 @@ export async function downWorkspace(workspace: string){
 
 async function createWorkspace(name: string, specification: string, readme: string){
     if(await isWorkspace(name)) throw "Workspace already exists"
-    await mkdir(`${ROOT}/${name}`)
+    await mkdir(`${rootPath}/${name}`)
     await writeReadme(name, readme)
     await writeSpecification(name, specification)
     return {done: true}
 }
 
 export async function saveWorkspace(name: string, readme: string, specification: string){
-    const p = `${ROOT}/${name}`
+    const p = `${rootPath}/${name}`
     if(! await isWorkspace(p)){
         return await createWorkspace(p, readme, specification)
     }else{
@@ -167,7 +166,7 @@ export async function saveWorkspace(name: string, readme: string, specification:
 }
 
 export async function deleteWorkspace(name: string){
-    const p = `${ROOT}/${name}`
+    const p = `${rootPath}/${name}`
     if(!isWorkspace(p)) throw "Workspace doesn't exist"
     await downWorkspace(p)
     await rm(p, { recursive: true, force: true });

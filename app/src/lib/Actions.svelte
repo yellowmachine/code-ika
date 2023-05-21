@@ -24,6 +24,7 @@
             ({ result, update }) => {
                 if (result.type === 'success') {
                     //dispatch('state', result.data)
+                    console.log(result)
                     invalidateAll()
                 }
                 update();
@@ -46,6 +47,7 @@
             ({ result, update }) => {
                 if (result.type === 'success') {
                     //dispatch('state', result.data)
+                    console.log(result)
                     invalidateAll()
                 }
                 update();
@@ -69,6 +71,7 @@
             ({ result, update }) => {
                 if (result.type === 'success') {
                     //dispatch('state', result.data)
+                    console.log(result)
                     invalidateAll()
                 }
                 update();

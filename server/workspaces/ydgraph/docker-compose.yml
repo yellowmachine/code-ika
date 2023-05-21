@@ -1,12 +1,13 @@
 services:
   db:
     image: dgraph/standalone:master
-    ports:
-      - 8080:8080
-  node-v2: 
+    #ports:
+    #  - 8080:8080
+  code: 
     image: nodecode
     ports: 
       - 8080
+      - 5173
     #volumes:
     #   - "$HOME/.config:/root/.config"
     command:

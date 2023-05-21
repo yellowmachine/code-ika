@@ -11,7 +11,9 @@ export const router = t.router({
     z.object({workspace: z.string()})
   ).mutation(async ({ input }) => {
     await upWorkspace(input.workspace)
-    return await getStates()
+    const x = await getStates()
+    //console.log(x)
+    return x
   }),
   down: t.procedure.input(
     z.object({workspace: z.string()})

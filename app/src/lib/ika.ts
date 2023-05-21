@@ -146,7 +146,12 @@ export async function upWorkspace(workspace: string){
 }
 
 export async function downWorkspace(workspace: string){
-    return await cmd('down', `${rootPath}/${workspace}`)
+    return await cmd('down', `${rootPath}/${workspace}`, ['-v'])
+}
+
+async function isRunning(name: string){
+    const ps = await getWorkspaceState(name)
+    return ps.services.length > 0
 }
 
 async function createWorkspace(name: string, specification: string, readme: string){
@@ -162,6 +167,7 @@ export async function saveWorkspace(name: string, readme: string, specification:
     if(! await isWorkspace(p)){
         return await createWorkspace(p, readme, specification)
     }else{
+        if(await isRunning(p)) throw "Workspace is running"
         await writeReadme(p, readme)
         await writeSpecification(p, specification)
         return {done: true}

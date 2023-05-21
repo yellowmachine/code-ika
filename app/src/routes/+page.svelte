@@ -4,10 +4,14 @@
     import Workspaces from '../lib/Workspaces.svelte';
     import type { WORKSPACE } from '../lib/types';
     import Form from '../lib/Form.svelte';
+	import { invalidateAll } from '$app/navigation';
 
     export let data: PageData;
-
-    let state: WORKSPACE[] = data.ps;
+    let state: WORKSPACE[];
+    $: {
+        state = data.ps;
+        console.log(state)
+    }
 
 	function subscribe() {
 		const sse = new EventSource('/');
@@ -26,6 +30,7 @@
 
     function onState(event: CustomEvent<{state:WORKSPACE[]}>){
         state = event.detail.state
+        invalidateAll()
     }
 
     //const interval = setInterval(invalidateAll, 5000);

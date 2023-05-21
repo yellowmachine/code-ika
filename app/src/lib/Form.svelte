@@ -1,6 +1,5 @@
 <script lang="ts">
     import type { WORKSPACE } from './types';
-    import { page } from '$app/stores';
     import { trpc } from '$lib/trpc/client';
 
     export let workspace: WORKSPACE|null;
@@ -28,6 +27,7 @@
 <div>Saving...</div>
 {:else}
 <div>
+    <h3>Create or edit a workspace</h3>
     <input 
         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
         type="text" name="workspace" value={data.workspace} placeholder="Workspace name" required />

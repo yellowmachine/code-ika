@@ -10,6 +10,8 @@ import { ROOT } from '$env/static/private';
 
 const rootPath = ROOT || "/workspaces"
 
+console.log(rootPath)
+
 export const workspaceEmitter = new EventEmitter();
 
 function startEmitter(){
@@ -50,6 +52,7 @@ function startEmitter(){
 //startEmitter()
 
 export async function cmd(cmd: "ps" | "upAll" | "down" | "config", workspace: string, options?: string[]){
+    
     try{
         const res = await compose[cmd]({
             cwd: workspace,
@@ -143,7 +146,7 @@ export async function upWorkspace(workspace: string){
 }
 
 export async function downWorkspace(workspace: string){
-    return await cmd('down', workspace)
+    return await cmd('down', `${rootPath}/${workspace}`)
 }
 
 async function createWorkspace(name: string, specification: string, readme: string){

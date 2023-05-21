@@ -22,6 +22,7 @@
         method="post"
         use:enhance={() =>
             ({ result, update }) => {
+                console.log(result)
                 if (result.type === 'success') {
                     //dispatch('state', result.data)
                     console.log(result)
@@ -31,6 +32,7 @@
         }}
     
     >
+        <input type="hidden" name="workspace" value={data.workspace} />
         <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
             Up
         </button>

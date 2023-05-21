@@ -12,13 +12,17 @@ export const load: PageServerLoad = async () => {
 export const actions: Actions = {
 
 	async up({ request }) {
-        console.log('up', request)
+        console.log('up-->')
 		const form = await request.formData();
+        console.log('form', form)
 		const workspace = form.get('workspace')?.toString();
+        console.log('workspace', workspace)
 		if (! workspace) return fail(400, { message: 'Please specify workspace!' });
         
+        console.log('up...')
         await upWorkspace(workspace)
         const ps = await getStates()
+        console.log('ps', ps)
         return {
             success: true,
             data: ps

@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { onMount, onDestroy } from 'svelte';
-    import {invalidateAll} from '$app/navigation';
 	import type { PageData } from './$types';
     import Workspaces from '../lib/Workspaces.svelte';
     import type { WORKSPACE } from '../lib/types';
@@ -36,6 +35,22 @@
         loading = false;
     }
 
+    async function down(event: CustomEvent<{workspace:string}>){
+        workspace = event.detail.workspace
+        loading = true;
+        const response = await trpc($page).down.query({workspace});
+        state = response.data;
+        loading = false;
+    }
+
+    async function delete_(event: CustomEvent<{workspace:string}>){
+        workspace = event.detail.workspace
+        loading = true;
+        const response = await trpc($page).delete.query({workspace});
+        state = response.data;
+        loading = false;
+    }
+
     //const interval = setInterval(invalidateAll, 5000);
 	//onDestroy(() => {
 	//	clearInterval(interval);
@@ -48,7 +63,7 @@
 
 <main>
       <div class="grid grid-cols-3 gap-4">
-        <Workspaces on:edit={edit} data={state} on:up={up} />
+        <Workspaces on:edit={edit} data={state} on:up={up} on:down={down} on:delete={delete_} />
         <Form workspace={editWorkspace} />
       </div>
 </main>

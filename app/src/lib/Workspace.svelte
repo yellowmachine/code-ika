@@ -21,7 +21,7 @@
     async function onUp(event: CustomEvent<{workspace:string}>){
         const workspace = event.detail.workspace
         loading = true;
-        const response = await trpc($page).up.query({workspace});
+        const response = await trpc($page).up.mutate({workspace});
         loading = false;
         dispatch('state', {
 			state: response.data
@@ -31,7 +31,7 @@
     async function onDown(event: CustomEvent<{workspace:string}>){
         const workspace = event.detail.workspace
         loading = true;
-        const response = await trpc($page).down.query({workspace});
+        const response = await trpc($page).down.mutate({workspace});
         loading = false;
         dispatch('state', {
 			state: response.data
@@ -41,7 +41,7 @@
     async function onDelete(event: CustomEvent<{workspace:string}>){
         const workspace = event.detail.workspace
         loading = true;
-        const response = await trpc($page).delete.query({workspace});
+        const response = await trpc($page).delete.mutate({workspace});
         loading = false;
         dispatch('state', {
 			state: response.data

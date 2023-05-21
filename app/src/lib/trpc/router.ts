@@ -9,7 +9,7 @@ export const t = initTRPC.context<Context>().create();
 export const router = t.router({
   up: t.procedure.input(
     z.object({workspace: z.string()})
-  ).query(async ({ input }) => {
+  ).mutation(async ({ input }) => {
     await upWorkspace(input.workspace)
     const ps = await getStates()
     return {
@@ -19,7 +19,7 @@ export const router = t.router({
   }),
   down: t.procedure.input(
     z.object({workspace: z.string()})
-  ).query(async ({ input }) => {
+  ).mutation(async ({ input }) => {
     await downWorkspace(input.workspace)
     const ps = await getStates()
     return {
@@ -29,7 +29,7 @@ export const router = t.router({
   }),
   delete: t.procedure.input(
     z.object({workspace: z.string()})
-  ).query(async ({ input }) => {
+  ).mutation(async ({ input }) => {
     await deleteWorkspace(input.workspace)
     const ps = await getStates()
     return {
@@ -39,7 +39,7 @@ export const router = t.router({
   }),
   save: t.procedure.input(
     z.object({workspace: z.string(), readme: z.string(), specification: z.string()})
-  ).query(async ({ input }) => {
+  ).mutation(async ({ input }) => {
     await saveWorkspace(input.workspace, input.readme, input.specification)
     const ps = await getStates()
     return {

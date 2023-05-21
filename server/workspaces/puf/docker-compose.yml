@@ -1,5 +1,11 @@
 services:
-  python-v2: 
-    image: pythoncode
+  node-v2: 
+    image: nodecode
     ports: 
       - 8080
+      - 3000:3000
+    command:
+      - /bin/sh
+      - -c
+      - |
+        code-server --host 0.0.0.0 /project

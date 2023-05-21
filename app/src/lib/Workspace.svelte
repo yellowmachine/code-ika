@@ -12,4 +12,4 @@
 <div>{data.readme}</div>
 <H code={data.specification} />
 <Services data={data.services} />
-<Actions {data} on:edit />
+<Actions {data} on:edit on:state />

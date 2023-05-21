@@ -1,0 +1,17 @@
+services:
+  db:
+    image: dgraph/standalone:master
+    ports:
+      - 8080:8080
+  node-v2: 
+    image: nodecode
+    ports: 
+      - 8080
+    #volumes:
+    #   - "$HOME/.config:/root/.config"
+    command:
+      - /bin/sh
+      - -c
+      - |
+        git clone https://github.com/yellowmachine/ypipe.git .
+        code-server --host 0.0.0.0 /project

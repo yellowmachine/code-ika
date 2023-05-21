@@ -16,8 +16,12 @@ export const actions: Actions = {
 		const workspace = form.get('workspace')?.toString();
 		if (! workspace) return fail(400, { message: 'Please specify workspace!' });
         
-        const response = await upWorkspace(workspace)
-        return {response}
+        await upWorkspace(workspace)
+        const ps = await getStates()
+        return {
+            success: true,
+            data: ps
+        };
 	},
 
     async down({ request }) {
@@ -25,8 +29,12 @@ export const actions: Actions = {
 		const workspace = form.get('workspace')?.toString();
 		if (! workspace) return fail(400, { message: 'Please specify workspace!' });
 
-        const response = await downWorkspace(workspace)
-        return {response}
+        await downWorkspace(workspace)
+        const ps = await getStates()
+        return {
+            success: true,
+            data: ps
+        };
 	},
 
     async save({ request }) {
@@ -37,8 +45,12 @@ export const actions: Actions = {
         
 		if (! workspace || ! readme || ! specification) return fail(400, { message: 'Please specify workspace!' });
         
-        const response = await saveWorkspace(workspace, readme, specification)
-        return {response}
+        await saveWorkspace(workspace, readme, specification)
+        const ps = await getStates()
+        return {
+            success: true,
+            data: ps
+        };
 	},
 
     async delete({ request }) {
@@ -46,7 +58,11 @@ export const actions: Actions = {
 		const workspace = form.get('workspace')?.toString();
 		if (! workspace) return fail(400, { message: 'Please specify workspace!' });
         
-        const response = await deleteWorkspace(workspace)
-        return {response}
+        await deleteWorkspace(workspace)
+        const ps = await getStates()
+        return {
+            success: true,
+            data: ps
+        };
 	},
 };

@@ -6,37 +6,26 @@
     
     export let data: WORKSPACE;
 
-    const dispatch = createEventDispatcher<{ state:{ps:WORKSPACE[]}, edit:{workspace:string}}>()
+    const dispatch = createEventDispatcher<{ up:{workspace:string}, state:{ps:WORKSPACE[]}, edit:{workspace:string}}>()
 
     function edit(workspace: string){
         dispatch('edit', {
 			workspace
 		});
     }
+
+    function up(){
+        dispatch('up', {
+			workspace: data.workspace
+		});
+    }
 </script>
 
 <div class="grid grid-rows-1 grid-flow-col gap-4">
     {#if data.isValid}
-    <form
-        action={"?/up"}
-        method="post"
-        use:enhance={() =>
-            ({ result, update }) => {
-                console.log(result)
-                if (result.type === 'success') {
-                    //dispatch('state', result.data)
-                    console.log(result)
-                    invalidateAll()
-                }
-                update();
-        }}
-    
-    >
-        <input type="hidden" name="workspace" value={data.workspace} />
-        <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+        <button on:click={up} class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
             Up
         </button>
-    </form>
     {:else}
         <div class="text-red font-bold">Errors in config file</div>
     {/if}
@@ -55,6 +44,7 @@
                 update();
         }}
     >
+        <input type="hidden" name="workspace" value={data.workspace} />
         <button class="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded">
             Down
         </button>
@@ -79,6 +69,7 @@
                 update();
         }}
     >
+        <input type="hidden" name="workspace" value={data.workspace} />
         <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
             Delete
         </button>

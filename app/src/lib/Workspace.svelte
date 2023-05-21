@@ -14,4 +14,4 @@
 <H code={data.readme} language={md} />
 <H code={data.specification} language={yaml} />
 <Services data={data.services} />
-<Actions {data} on:edit on:state />
+<Actions {data} on:edit on:state on:up />

@@ -5,7 +5,10 @@
     import Workspaces from '../lib/Workspaces.svelte';
     import type { WORKSPACE } from '../lib/types';
     import Form from '../lib/Form.svelte';
+    import { page } from '$app/stores';
+    import { trpc } from '$lib/trpc/client';
 
+    let loading = false;
     export let data: PageData;
 
     let state: WORKSPACE[] = data.ps;
@@ -25,6 +28,14 @@
         workspace = event.detail.workspace
     }
 
+    async function up(event: CustomEvent<{workspace:string}>){
+        workspace = event.detail.workspace
+        loading = true;
+        const response = await trpc($page).up.query({workspace});
+        state = response.data;
+        loading = false;
+    }
+
     //const interval = setInterval(invalidateAll, 5000);
 	//onDestroy(() => {
 	//	clearInterval(interval);
@@ -37,7 +48,7 @@
 
 <main>
       <div class="grid grid-cols-3 gap-4">
-        <Workspaces on:edit={edit} data={state} />
+        <Workspaces on:edit={edit} data={state} on:up={up} />
         <Form workspace={editWorkspace} />
       </div>
 </main>

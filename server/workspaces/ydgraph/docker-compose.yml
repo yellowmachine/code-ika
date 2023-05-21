@@ -13,5 +13,5 @@ services:
       - /bin/sh
       - -c
       - |
-        git clone https://github.com/yellowmachine/ypipe.git .
+        git clone https://github.com/yellowmachine/ika-example-dgraph.git .
         code-server --host 0.0.0.0 /project

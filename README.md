@@ -68,6 +68,8 @@ services:
         code-server /project
 ```
 
+(pending to share volume in docker-compose.yaml so .ssh is correctly set and git user.name, user.email, then you can commit and push your repos)
+
 `Dockerfile`
 
 ```Dockerfile

@@ -38,7 +38,7 @@
 </script>
 
 {#if loading}
-    Loading...
+    Waiting...
 {:else}
     <div class="grid grid-rows-1 grid-flow-col gap-4">
         {#if data.isValid}

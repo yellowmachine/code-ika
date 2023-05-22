@@ -21,6 +21,7 @@
     $: if(workspace !== null){
         data = workspace
     }
+
 </script>
 
 {#if loading}

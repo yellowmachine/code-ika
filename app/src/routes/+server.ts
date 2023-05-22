@@ -6,7 +6,6 @@ export const GET = () => {
 	const stream = new ReadableStream({
 		start(controller) {
 			workspaceEmitter.on('event:ps', (msg: any) => {
-				console.log('--->', msg)
 				controller.enqueue('data: ' + JSON.stringify(msg) + "\n\n");
 			});
 			workspaceEmitter.on('event:log', (msg: any) => {

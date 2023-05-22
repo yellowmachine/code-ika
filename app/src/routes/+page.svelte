@@ -10,13 +10,11 @@
     let state: WORKSPACE[];
     $: {
         state = data.ps;
-        console.log(state)
     }
 
 	function subscribe() {
 		const sse = new EventSource('/');
 		sse.onmessage = (ev) => {
-            console.log(ev)
             state = ev.data.ps;
         }
 		return () => sse.close();

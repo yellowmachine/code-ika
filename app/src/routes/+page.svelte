@@ -33,10 +33,10 @@
         invalidateAll()
     }
 
-    //const interval = setInterval(invalidateAll, 5000);
-	//onDestroy(() => {
-	//	clearInterval(interval);
-	//});
+    const interval = setInterval(invalidateAll, 5000);
+	onDestroy(() => {
+		clearInterval(interval);
+	});
 
     let workspace: string|null = null
     $: editWorkspace = workspace === null ? null : state.filter(x => x.workspace === workspace)[0]

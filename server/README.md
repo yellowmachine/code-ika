@@ -4,7 +4,7 @@ See full repo at [dgraph schema testing auth rules](https://github.com/yellowmac
 
 # sveltekit app with dgraph backend
 
-`npm run dev` to start sveltekit and code your frontend. Let's see the testing side in dgraph folder:
+`npm run dev` to start sveltekit server and code your frontend. Let's see the testing side in dgraph folder:
 
 `./dgraph/index.js`
 

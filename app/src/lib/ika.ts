@@ -6,9 +6,8 @@ import DockerEvents from "@direktspeed/docker-events";
 import Dockerode from 'dockerode';
 import { EventEmitter } from 'node:events';
 import type { WORKSPACE } from './types'
-import { ROOT } from '$env/static/private';
 
-const rootPath = ROOT || "/workspaces"
+const rootPath = "/workspaces"
 
 console.log(rootPath)
 

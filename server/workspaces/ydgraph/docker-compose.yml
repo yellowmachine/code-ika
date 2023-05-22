@@ -1,10 +1,9 @@
 services:
   db:
     image: dgraph/standalone:master
-    #ports:
-    #  - 8080:8080
+    ports:
+      - 8080:8080
   code: 
-    #image: nodecode
     build: .
     ports: 
       - 8080
@@ -16,4 +15,4 @@ services:
       - -c
       - |
         git clone https://github.com/yellowmachine/ika-example-dgraph.git .
-        code-server --host 0.0.0.0 /project
+        code-server /project

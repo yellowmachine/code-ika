@@ -7,6 +7,8 @@ docker-compose up --build
 
 then open http://localhost:3000  (password for code-server containers is the word "secret". You will change it later)
 
+![image](./code-workspaces.png)
+
 Files:
 
 `docker-compose.yml`
@@ -95,3 +97,5 @@ auth: password
 password: secret
 cert: false
 ```
+
+[See example](./server/README.md)

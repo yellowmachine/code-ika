@@ -10,12 +10,10 @@ services:
       - 5173
     volumes:
     #   - "$HOME/.config:/root/.config"
-        - ~/.ssh:/root/.ssh
+    #   - ~/.ssh:/root/.ssh
     command:
       - /bin/sh
       - -c
       - |
-        git config --global user.name "my name"
-        git config --global user.email "my-email@example.com"
         git clone https://github.com/yellowmachine/ika-example-dgraph.git .
         code-server /project

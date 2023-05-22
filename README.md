@@ -60,8 +60,6 @@ services:
     ports: 
       - 8080
       - 5173
-    #volumes:
-    #   - "$HOME/.config:/root/.config"
     command:
       - /bin/sh
       - -c

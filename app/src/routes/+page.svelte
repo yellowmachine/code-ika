@@ -7,7 +7,9 @@
 	import { invalidateAll } from '$app/navigation';
 
     export let data: PageData;
+    
     let state: WORKSPACE[];
+    
     $: {
         state = data.ps;
     }
@@ -31,6 +33,8 @@
         invalidateAll()
     }
 
+    // this is necessary because this is still not receiving state events from server and the state
+    // from up or down actions is done server side before up or down is completed 
     const interval = setInterval(invalidateAll, 5000);
 	onDestroy(() => {
 		clearInterval(interval);
@@ -47,7 +51,3 @@
         <Form workspace={editWorkspace} />
       </div>
 </main>
-
-<style>
-
-</style>

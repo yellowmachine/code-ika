@@ -1,4 +1,4 @@
-import { readdir, readFile, writeFile, lstat, rm, mkdir } from 'fs/promises';
+import { readdir, readFile, writeFile, access, rm, mkdir } from 'fs/promises';
 import { v2 as compose } from 'docker-compose';
 import  path from 'path';
 // @ts-ignore
@@ -8,7 +8,7 @@ import { EventEmitter } from 'node:events';
 import type { WORKSPACE } from './types'
 import { dev } from '$app/environment';
 
-const rootPath = dev ? '../../../server/workspaces': "/workspaces"
+const rootPath = dev ? '../server/workspaces': "/workspaces"
 
 console.log(rootPath)
 
@@ -61,8 +61,9 @@ export async function cmd(cmd: "ps" | "upAll" | "down" | "config", workspace: st
         return res
     }
     catch(err){
-        console.log(err)
-        throw err
+        console.log(cmd, err)
+        return { exitCode: 1, data: { services: [], error: JSON.stringify(err)}}
+        //throw err
     }
 }
 
@@ -138,7 +139,12 @@ async function getWorkspace(name: string){
 }
 
 async function isWorkspace(name: string){
-    return (await lstat(name)).isDirectory()
+    try{
+        await access(name)
+        return true
+    }catch{
+        return false
+    }
 }
 
 export async function upWorkspace(workspace: string){
@@ -155,8 +161,7 @@ async function isRunning(name: string){
 }
 
 async function createWorkspace(name: string, specification: string, readme: string){
-    if(await isWorkspace(name)) throw "Workspace already exists"
-    await mkdir(`${rootPath}/${name}`)
+    await mkdir(name)
     await writeReadme(name, readme)
     await writeSpecification(name, specification)
     return {done: true}
@@ -164,20 +169,21 @@ async function createWorkspace(name: string, specification: string, readme: stri
 
 export async function saveWorkspace(name: string, readme: string, specification: string){
     const p = `${rootPath}/${name}`
-    if(! await isWorkspace(p)){
+    const isDir = await isWorkspace(p)
+    if(!isDir){
         return await createWorkspace(p, readme, specification)
     }else{
         if(await isRunning(p)) throw "Workspace is running"
         await writeReadme(p, readme)
         await writeSpecification(p, specification)
-        return {done: true}
+        return {done: true} 
     }
 }
 
 export async function deleteWorkspace(name: string){
     const p = `${rootPath}/${name}`
     if(!isWorkspace(p)) throw "Workspace doesn't exist"
-    await downWorkspace(p)
+    //await downWorkspace(p)
     await rm(p, { recursive: true, force: true });
     return {done: true}
 }

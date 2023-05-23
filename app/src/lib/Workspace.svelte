@@ -17,35 +17,57 @@
 
     export let data: WORKSPACE;
     let loading = false;
+    let error = ""
 
     async function onUp(event: CustomEvent<{workspace:string}>){
-        const workspace = event.detail.workspace
-        loading = true;
-        const state = await trpc($page).up.mutate({workspace});
-        loading = false;
-        dispatch('state', {
-			state
-		});
+        try{
+            const workspace = event.detail.workspace
+            loading = true;
+            const state = await trpc($page).up.mutate({workspace});
+            dispatch('state', {
+                state
+            });
+            error = ""
+        }catch(err){
+            error = JSON.stringify(err)
+        }
+        finally{
+            loading = false;
+        }
     }
 
     async function onDown(event: CustomEvent<{workspace:string}>){
-        const workspace = event.detail.workspace
-        loading = true;
-        const state = await trpc($page).down.mutate({workspace});
-        loading = false;
-        dispatch('state', {
-			state
-		});
+        try{    
+            const workspace = event.detail.workspace
+            loading = true;
+            const state = await trpc($page).down.mutate({workspace});
+            dispatch('state', {
+                state
+            });
+            error = ""
+        }catch(err){
+            error = JSON.stringify(err)
+        }
+            finally{
+                loading = false;
+        }
     }
 
     async function onDelete(event: CustomEvent<{workspace:string}>){
-        const workspace = event.detail.workspace
-        loading = true;
-        const state = await trpc($page).delete.mutate({workspace});
-        loading = false;
-        dispatch('state', {
-			state
-		});
+        try{
+            const workspace = event.detail.workspace
+            loading = true;
+            const state = await trpc($page).delete.mutate({workspace});
+            dispatch('state', {
+                state
+            });
+            error = ""
+        }catch(err){
+            error = JSON.stringify(err)
+        }
+        finally{
+            loading = false;
+        }
     }
 
 </script>
@@ -55,3 +77,4 @@
 <H code={data.specification} language={yaml} />
 <Services data={data.services} />
 <Actions on:edit on:up={onUp} on:down={onDown} on:delete={onDelete} {loading} {data} />
+<div class="bg-red-500 text-white">{error}</div>

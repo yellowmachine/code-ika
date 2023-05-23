@@ -33,6 +33,10 @@
         invalidateAll()
     }
 
+    function onSave(){
+        invalidateAll()
+    }
+
     // this is necessary because this is still not receiving state events from server and the state
     // from up or down actions is done server side before up or down is completed 
     const interval = setInterval(invalidateAll, 5000);
@@ -48,6 +52,6 @@
 <main>
       <div class="grid grid-cols-3 gap-4">
         <Workspaces on:edit={onEdit} on:state={onState} data={state} />
-        <Form workspace={editWorkspace} />
+        <Form workspace={editWorkspace} on:save={onSave} />
       </div>
 </main>

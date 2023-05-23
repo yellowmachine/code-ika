@@ -11,7 +11,7 @@
 <div>
     <h3>Filter by name</h3>
     <input type="text" bind:value={filter} />
-    {#each filtered as workspace}
+    {#each filtered as workspace (workspace.workspace)}
         <Workspace data={workspace} on:state on:edit />
     {/each}
 </div>

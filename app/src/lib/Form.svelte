@@ -1,6 +1,11 @@
 <script lang="ts">
     import type { WORKSPACE } from './types';
     import { trpc } from '$lib/trpc/client';
+    import { createEventDispatcher } from 'svelte';
+
+    const dispatch = createEventDispatcher<{ 
+        save:{}
+    }>()
 
     export let workspace: WORKSPACE|null;
 
@@ -18,6 +23,7 @@
             error = "Errors: " + JSON.stringify(err)
         }finally{
             loading = false;
+            dispatch('save')
         }
     }
 

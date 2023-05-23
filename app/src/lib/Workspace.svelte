@@ -19,11 +19,10 @@
     let loading = false;
     let error = ""
 
-    async function onUp(event: CustomEvent<{workspace:string}>){
+    async function cmd(c: "up"|"down"|"delete", workspace: string){
         try{
-            const workspace = event.detail.workspace
             loading = true;
-            const state = await trpc($page).up.mutate({workspace});
+            const state = await trpc($page)[c].mutate({workspace});
             dispatch('state', {
                 state
             });
@@ -34,40 +33,18 @@
         finally{
             loading = false;
         }
+    }
+
+    async function onUp(event: CustomEvent<{workspace:string}>){
+        await cmd("up", event.detail.workspace)
     }
 
     async function onDown(event: CustomEvent<{workspace:string}>){
-        try{    
-            const workspace = event.detail.workspace
-            loading = true;
-            const state = await trpc($page).down.mutate({workspace});
-            dispatch('state', {
-                state
-            });
-            error = ""
-        }catch(err){
-            error = JSON.stringify(err)
-        }
-            finally{
-                loading = false;
-        }
+        await cmd("down", event.detail.workspace)
     }
 
     async function onDelete(event: CustomEvent<{workspace:string}>){
-        try{
-            const workspace = event.detail.workspace
-            loading = true;
-            const state = await trpc($page).delete.mutate({workspace});
-            dispatch('state', {
-                state
-            });
-            error = ""
-        }catch(err){
-            error = JSON.stringify(err)
-        }
-        finally{
-            loading = false;
-        }
+        await cmd("delete", event.detail.workspace)
     }
 
 </script>

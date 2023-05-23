@@ -34,7 +34,7 @@ function test(){
 const dql = dgraph(config) // just send a schema to database
 
 async function main() {
-    const t = `w'[ dql? | test ]`; // pipeline expression, see ypipe: https://github.com/yellowmachine/ypipe
+    const t = `w'[ dql? | test ]`; // pipeline expression, see ypipe
     const f = compile(t, {
                             namespace: {dql, test}, 
                             plugins: {w: w(["./tests/*.js", "./schema/*.*"])}
@@ -46,7 +46,7 @@ main()
 ```
 
 The pipeline is based on [ypipe](https://github.com/yellowmachine/ypipe)
-(Disclaimer, I'm the author of `ypipe`)
+(Disclaimer, I'm the author of [ypipe](https://github.com/yellowmachine/ypipe))
 
 ```json
 "scripts": {

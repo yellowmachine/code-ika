@@ -172,7 +172,7 @@ export async function saveWorkspace(name: string, readme: string, specification:
     if(!isDir){
         return await createWorkspace(p, readme, specification)
     }else{
-        if(await isRunning(p)) throw "Workspace is running"
+        if(await isRunning(name)) throw "Workspace is running"
         await writeReadme(p, readme)
         await writeSpecification(p, specification)
         return {done: true} 

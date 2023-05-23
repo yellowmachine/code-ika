@@ -8,7 +8,7 @@ import { EventEmitter } from 'node:events';
 import type { WORKSPACE } from './types'
 import { dev } from '$app/environment';
 
-const rootPath = dev ? '/home/miguel/dev/docker/code01/server/workspaces': "/workspaces"
+const rootPath = dev ? '../../../server/workspaces': "/workspaces"
 
 console.log(rootPath)
 

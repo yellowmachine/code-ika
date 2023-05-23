@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { onMount, onDestroy } from 'svelte';
 	import type { PageData } from './$types';
-    import Workspaces from '../lib/Workspaces.svelte';
-    import type { WORKSPACE } from '../lib/types';
-    import Form from '../lib/Form.svelte';
+    import Workspaces from '$lib/Workspaces.svelte';
+    import type { WORKSPACE } from '$lib/types';
+    import Form from '$lib/Form.svelte';
 	import { invalidateAll } from '$app/navigation';
 
     export let data: PageData;

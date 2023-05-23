@@ -46,6 +46,7 @@ main()
 ```
 
 The pipeline is based on [ypipe](https://github.com/yellowmachine/ypipe)
+(Disclaimer, I'm the author of `ypipe`)
 
 ```json
 "scripts": {

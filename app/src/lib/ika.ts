@@ -63,7 +63,6 @@ export async function cmd(cmd: "ps" | "upAll" | "down" | "config", workspace: st
     catch(err){
         console.log(cmd, err)
         return { exitCode: 1, data: { services: [], error: JSON.stringify(err)}}
-        //throw err
     }
 }
 
